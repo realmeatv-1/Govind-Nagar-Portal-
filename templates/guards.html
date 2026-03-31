@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% block content %}
+<h3>Security Guards (KYC + Salary)</h3>
+<div class="card">
+  <h4>Add Guard Details with KYC</h4>
+  <form method="post" class="grid-form">
+    <input type="hidden" name="form_type" value="guard">
+    <input name="name" placeholder="Guard Name" required>
+    <input name="mobile" placeholder="Mobile" required>
+    <input name="address" placeholder="Address" required>
+    <input name="kyc_id" placeholder="KYC ID Number" required>
+    <input name="kyc_doc" placeholder="KYC doc ref/link">
+    <input type="date" name="joining_date" required>
+    <input type="number" step="0.01" name="monthly_salary" placeholder="Monthly Salary" required>
+    <button>Add Guard</button>
+  </form>
+</div>
+
+<div class="card">
+  <h4>Record Monthly Salary Payment (Cash/UPI)</h4>
+  <form method="post" class="grid-form">
+    <input type="hidden" name="form_type" value="salary">
+    <select name="guard_id">{% for g in guards %}<option value="{{g.id}}">{{g.name}}</option>{% endfor %}</select>
+    <input type="number" name="month" min="1" max="12" required>
+    <input type="number" name="year" required>
+    <input type="number" step="0.01" name="amount" required>
+    <input type="date" name="paid_on" required>
+    <select name="method"><option>cash</option><option>upi</option></select>
+    <input name="notes" placeholder="Notes">
+    <button>Record Salary</button>
+  </form>
+</div>
+
+<div class="card">
+  <table><tr><th>Name</th><th>Mobile</th><th>KYC</th><th>Salary</th></tr>
+  {% for g in guards %}<tr><td>{{g.name}}</td><td>{{g.mobile}}</td><td>{{g.kyc_id}}</td><td>₹{{g.monthly_salary}}</td></tr>{% endfor %}
+  </table>
+</div>
+{% endblock %}

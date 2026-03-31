@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% block content %}
+<h3>Member Dashboard</h3>
+<div class="grid">
+  <div class="card"><strong>Year {{ year }} Paid</strong><p>₹ {{ '%.2f'|format(paid) }}</p></div>
+  <div class="card"><strong>Pending Amount</strong><p>₹ {{ '%.2f'|format(due) }}</p></div>
+  <div class="card complaint-box"><strong>Complaint Numbers Box</strong><p>Total Complaints: {{ complaints|length }}</p></div>
+</div>
+
+<div class="card">
+  <h4>Payment History</h4>
+  <table><tr><th>Year</th><th>Amount</th><th>Date</th><th>Method</th><th>Status</th></tr>
+  {% for p in payments %}
+  <tr><td>{{ p.year }}</td><td>₹{{ p.amount }}</td><td>{{ p.paid_on }}</td><td>{{ p.method }}</td><td>{{ p.status }}</td></tr>
+  {% endfor %}
+  </table>
+</div>
+{% endblock %}

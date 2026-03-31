@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block content %}
+<h3>Member Visibility Settings</h3>
+<div class="card">
+<form method="post">
+  <label><input type="checkbox" name="show_balance_sheet" {% if get_setting('show_balance_sheet','1')=='1' %}checked{% endif %}> Show balance sheet to members</label><br>
+  <label><input type="checkbox" name="show_expenses" {% if get_setting('show_expenses','1')=='1' %}checked{% endif %}> Show expenses summaries to members</label><br>
+  <label><input type="checkbox" name="show_complaints" {% if get_setting('show_complaints','1')=='1' %}checked{% endif %}> Show complaint statuses to members</label><br>
+  <button>Save Settings</button>
+</form>
+</div>
+{% endblock %}

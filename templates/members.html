@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% block content %}
+<h3>Members Database (House/Shop)</h3>
+<div class="card">
+  <form method="get"><input name="q" placeholder="Search name/mobile/address"><button>Search</button></form>
+</div>
+<div class="card">
+  <h4>Add Member</h4>
+  <form method="post" action="{{ url_for('create_member') }}" class="grid-form">
+    <input name="name" placeholder="Owner Name" required>
+    <input name="mobile" placeholder="Mobile" required>
+    <input name="address" placeholder="Address" required>
+    <select name="property_type"><option value="house">House (₹700)</option><option value="shop">Shop (₹1200)</option></select>
+    <input name="password" placeholder="Password (optional)">
+    <button>Add Member</button>
+  </form>
+</div>
+
+<div class="card">
+  <table>
+    <tr><th>ID</th><th>Name</th><th>Address</th><th>Mobile</th><th>Type</th><th>Yearly</th><th>Due</th><th>Edit & Save</th><th>Reminder</th></tr>
+    {% for m in members %}
+      {% set paid, due = due_status(m, year) %}
+      <tr>
+        <td>{{ m.id }}</td><td>{{ m.name }}</td><td>{{ m.address }}</td><td>{{ m.mobile }}</td><td>{{ m.property_type }}</td><td>₹{{ m.yearly_charge }}</td><td>₹{{ '%.2f'|format(due) }}</td>
+        <td>
+          <form method="post" action="{{ url_for('edit_member', user_id=m.id) }}" class="inline-form">
+            <input name="name" value="{{ m.name }}" required>
+            <input name="mobile" value="{{ m.mobile }}" required>
+            <input name="address" value="{{ m.address }}" required>
+            <select name="property_type"><option value="house" {% if m.property_type=='house' %}selected{% endif %}>House</option><option value="shop" {% if m.property_type=='shop' %}selected{% endif %}>Shop</option></select>
+            <input name="password" placeholder="New password">
+            <button>Save</button>
+          </form>
+        </td>
+        <td>
+          <form method="post" action="{{ url_for('send_reminder') }}" class="inline-form">
+            <input type="hidden" name="user_id" value="{{ m.id }}">
+            <select name="channel"><option value="sms">SMS</option><option value="whatsapp">WhatsApp</option></select>
+            <button>Send</button>
+          </form>
+        </td>
+      </tr>
+    {% endfor %}
+  </table>
+</div>
+{% endblock %}

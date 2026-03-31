@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block content %}
+<h3>Admin Team Management</h3>
+<div class="card">
+  <form method="post" class="grid-form">
+    <input name="name" placeholder="Admin Name" required>
+    <input name="mobile" placeholder="Mobile" required>
+    <input name="password" placeholder="Password" required>
+    <input name="address" placeholder="Address">
+    <button>Add New Admin</button>
+  </form>
+</div>
+<div class="card">
+  <table><tr><th>Name</th><th>Mobile</th></tr>{% for a in admins %}<tr><td>{{a.name}}</td><td>{{a.mobile}}</td></tr>{% endfor %}</table>
+</div>
+{% endblock %}

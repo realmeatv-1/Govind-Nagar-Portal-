@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% block content %}
+<h3>Complaints</h3>
+{% if not admin %}
+<div class="card complaint-box">
+  <h4>Complaint Numbers Box</h4>
+  <form method="post">
+    <textarea name="description" placeholder="Describe complaint" required></textarea>
+    <button>Submit Complaint</button>
+  </form>
+</div>
+{% endif %}
+<div class="card">
+  <table><tr><th>Number</th><th>Member</th><th>Description</th><th>Status</th><th>Admin Note</th>{% if admin %}<th>Action</th>{% endif %}</tr>
+  {% for c in complaints %}
+  <tr>
+    <td>{{ c.number }}</td><td>{{ c.member.name }}</td><td>{{ c.description }}</td><td>{{ c.status }}</td><td>{{ c.admin_note or '' }}</td>
+    {% if admin %}
+    <td>
+      <form method="post" action="{{ url_for('update_complaint', cid=c.id) }}" class="inline-form">
+        <select name="status"><option {% if c.status=='open' %}selected{% endif %}>open</option><option {% if c.status=='in_progress' %}selected{% endif %}>in_progress</option><option {% if c.status=='resolved' %}selected{% endif %}>resolved</option></select>
+        <input name="admin_note" value="{{ c.admin_note or '' }}" placeholder="Note">
+        <button>Update</button>
+      </form>
+    </td>
+    {% endif %}
+  </tr>
+  {% endfor %}
+  </table>
+</div>
+{% endblock %}
