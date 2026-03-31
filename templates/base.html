@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Govind Nagar Suraksha Samiti</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <nav>
+    <h2>Govind Nagar Suraksha Samiti Portal</h2>
+    {% if current_user %}
+      <div>
+        <a href="{{ url_for('dashboard') }}">Dashboard</a>
+        <a href="{{ url_for('complaints') }}">Complaints</a>
+        {% if current_user.role == 'admin' %}
+          <a href="{{ url_for('members') }}">Members</a>
+          <a href="{{ url_for('payments') }}">Payments</a>
+          <a href="{{ url_for('finance') }}">Finance</a>
+          <a href="{{ url_for('guards') }}">Guards</a>
+          <a href="{{ url_for('admins') }}">Admins</a>
+          <a href="{{ url_for('settings') }}">Settings</a>
+        {% endif %}
+        <a href="{{ url_for('logout') }}">Logout</a>
+      </div>
+    {% endif %}
+  </nav>
+
+  <main>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, message in messages %}
+          <div class="flash {{ category }}">{{ message }}</div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+    {% block content %}{% endblock %}
+  </main>
+</body>
+</html>
